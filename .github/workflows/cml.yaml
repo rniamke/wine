@@ -15,6 +15,7 @@ jobs:
           python train.py
           
           echo "## METRIQUES DU MODEL" > rapport.md
+          echo "### Demo avec Eric" >> rapport.md
           cat metrics.txt >> rapport.md
           
           echo "## VISUALISATION" >> rapport.md
