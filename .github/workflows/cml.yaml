@@ -1,0 +1,26 @@
+name: my-wine-quality-eval
+on: [push]
+jobs:
+  run:
+    runs-on: [ubuntu-latest]
+    container: docker://dvcorg/cml-py3:latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: "Train my model"
+        env:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Your ML workflow goes here
+          pip install -r requirements.txt
+          python train.py
+          
+          echo "## METRIQUES DU MODEL" > rapport.md
+          cat metrics.txt >> rapport.md
+          
+          echo "## VISUALISATION" >> rapport.md
+          cml-publish feature_importance.png --md >> rapport.md
+          cml-publish residuals.png --md >> rapport.md
+          
+          cml-send-comment rapport.md
+          
+          
